@@ -1,0 +1,212 @@
+Mutations : for CREATE, UPDATE and DELETE operations
+ - sample request to update name
+ 
+    mutation{
+    update_users(
+        _set: {
+        name: "Shimanta K. Bhuyan"
+        }, 
+        where: {
+        name : {
+            _eq:  "Shimanta Krishna Bhuyan"
+        }
+        }){
+        affected_rows
+        returning {
+            id
+            name
+            email
+            updated_at
+        }
+    }
+    }
+
+    RESPONSE:
+    (if no updates were performed)
+    {
+    "data": {
+        "update_users": {
+        "affected_rows": 0,
+        "returning": []
+        }
+    }
+    }
+
+    (if updates were performed)
+    {
+    "data": {
+        "update_users": {
+        "affected_rows": 1,
+        "returning": [
+            {
+            "id": "github|32566682",
+            "name": "Shimanta Bhuyan",
+            "email": "",
+            "updated_at": "2020-12-17T14:25:59.354187+00:00"
+            }
+        ]
+        }
+    }
+    }
+
+ - sample to create task with tag
+    
+    mutation{
+    insert_tasks(objects: {
+        title: "Sample first task in Altair",
+        task_tags: {
+        data: {
+        tag: {
+            data: {
+            name: "FIRST TASK TAG"
+            }
+        }
+        }
+    }
+    }){
+        affected_rows
+        returning {
+        created_at
+        id
+        start_time
+        tags {
+            id
+            name
+        }
+        task_tags {
+            tag_id
+            tag {
+            id
+                name
+            }
+        }
+        }
+    }
+    }
+
+    RESPONSE:
+
+    {
+    "data": {
+        "insert_tasks": {
+        "affected_rows": 3,
+        "returning": [
+            {
+            "created_at": "2020-12-17T15:58:48.593877+00:00",
+            "id": 1000,
+            "start_time": null,
+            "tags": [
+                {
+                "id": 663,
+                "name": "FIRST TASK TAG"
+                }
+            ],
+            "task_tags": [
+                {
+                "tag_id": 663,
+                "tag": {
+                    "id": 663,
+                    "name": "FIRST TASK TAG"
+                }
+                }
+            ]
+            }
+        ]
+        }
+    }
+    }
+
+
+Queries: to query for data
+
+ - sample request to query for usernames
+
+    query{
+    users{
+        created_at
+        email
+        id
+        name
+        updated_at
+    }
+    }
+
+    RESPONSE:
+
+    {
+    "data": {
+        "users": [
+        {
+            "created_at": null,
+            "email": "",
+            "id": "github|32566682",
+            "name": "Shimanta K. Bhuyan",
+            "updated_at": "2020-12-17T14:25:59.354187+00:00"
+        }
+        ]
+    }
+    }
+
+ - sample request to query for task
+
+    query{
+        tasks{
+            created_at
+            end_time
+            id
+            start_time
+            tags {
+            id
+            name
+            }
+            task_tags {
+            tag {
+                id
+                name
+            }
+            }
+            title
+            updated_at
+            user {
+                email
+                id
+                name
+            }
+        }
+    }
+
+    RESPONSE:
+
+    {
+    "data": {
+        "tasks": [
+        {
+            "created_at": "2020-12-17T15:58:48.593877+00:00",
+            "end_time": null,
+            "id": 1000,
+            "start_time": null,
+            "tags": [
+            {
+                "id": 663,
+                "name": "FIRST TASK TAG"
+            }
+            ],
+            "task_tags": [
+            {
+                "tag": {
+                    "id": 663,
+                    "name": "FIRST TASK TAG"
+                }
+            }
+            ],
+            "title": "Sample first task in Altair",
+            "updated_at": "2020-12-17T16:20:24.985394+00:00",
+            "user": {
+                "email": "",
+                "id": "github|32566682",
+                "name": "Shimanta Bhuyan"
+            }
+        }
+        ]
+    }
+    }
