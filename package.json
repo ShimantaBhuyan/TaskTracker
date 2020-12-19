@@ -9,7 +9,7 @@
     "start": "parcel index.html --open",
     "build": "parcel build index.html --public-url ./",
     "predeploy": "npm run build",
-    "deploy": "gh-pages -d build"
+    "deploy": "gh-pages -d dist"
   },
   "keywords": [],
   "author": "",
